@@ -1,5 +1,5 @@
 develop:
-	python setup.py develop
+	python setup.py develop --user
 
 upload:
 	python setup.py sdist upload develop
