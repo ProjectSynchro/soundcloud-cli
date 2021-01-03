@@ -20,7 +20,7 @@ def print_shared_with(users):
 def command_auth(args):
     import getpass
     from .api.client import authenticate
-    
+
     # try to detect username
     username = settings.user.get('name', None)
     
@@ -32,12 +32,18 @@ def command_auth(args):
             if user_input:
                 username = user_input
         else:
+            if not os.getenv("SC_USER"):
+                print("you must set the SC_USER environment variable.")
+                exit(1)
             username = os.getenv("SC_USER")
 
     # read password
     if not args.env:
         password = getpass.getpass('enter password: ')
     else:
+        if not os.getenv("SC_PASS"):
+            print("you must set the SC_PASS environment variable.")
+            exit(1)
         password = os.getenv("SC_PASS")
 
     # authenticate with username/password
