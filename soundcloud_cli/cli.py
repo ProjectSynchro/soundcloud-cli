@@ -23,16 +23,22 @@ def command_auth(args):
 
     # try to detect username
     username = settings.user.get('name', None)
+    
     if not username:
-        username = getpass.getuser()
-
-    # read username
-    user_input = input('enter username ({0}): '.format(username))
-    if user_input:
-        username = user_input
+        if not args.env:
+            username = getpass.getuser()
+            # read username
+            user_input = input('enter username ({0}): '.format(username))
+            if user_input:
+                username = user_input
+        else:
+            username = os.getenv("SC_USER")
 
     # read password
-    password = getpass.getpass('enter password: ')
+    if not args.env:
+        password = getpass.getpass('enter password: ')
+    else:
+        password = os.getenv("SC_PASS")
 
     # authenticate with username/password
     client = authenticate(username, password)
@@ -174,6 +180,7 @@ def main():
     subparsers = parser.add_subparsers()
 
     auth_parser = subparsers.add_parser('auth', help='authenticate and save access token')
+    auth_parser.add_argument('--env', action='store_true', help='read username and password from environment variables.')
     auth_parser.set_defaults(command=command_auth)
 
     defaults_parser = subparsers.add_parser('defaults', help='configure defaults')
