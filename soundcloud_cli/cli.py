@@ -20,7 +20,6 @@ def print_shared_with(users):
 def command_auth(args):
     import getpass
     from .api.client import authenticate
-
     # try to detect username
     username = settings.user.get('name', None)
     

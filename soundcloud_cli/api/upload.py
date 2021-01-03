@@ -105,8 +105,4 @@ def upload(filename, sharing='private', downloadable=True, title=None, descripti
         print(res.text)
         return
 
-    if sharing == 'private':
-        secret_token = res['secret_uri'].split('secret_token=')[1]
-        res['permalink_url'] = res['permalink_url'] + '/' + secret_token
-
     return res
