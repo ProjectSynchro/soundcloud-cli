@@ -20,20 +20,29 @@ def print_shared_with(users):
 def command_auth(args):
     import getpass
     from .api.client import authenticate
-
     # try to detect username
     username = settings.user.get('name', None)
+    password = None
     if not username:
-        username = getpass.getuser()
+        if os.getenv("SND_USER") is not None:
+            pass
+            username = str(os.getenv("SND_USER"))
+        else:
+            pass
+            username = getpass.getuser()
+            # read username
+            user_input = input('enter username ({0}): '.format(username))
+            if user_input:
+                username = user_input
 
-    # read username
-    user_input = input('enter username ({0}): '.format(username))
-    if user_input:
-        username = user_input
-
-    # read password
-    password = getpass.getpass('enter password: ')
-
+    if os.getenv("SND_PASS") is not None:
+        pass
+        password = str(os.getenv("SND_PASS"))
+    else:
+        pass
+        # read password
+        password = getpass.getpass('enter password: ')
+        
     # authenticate with username/password
     client = authenticate(username, password)
 
